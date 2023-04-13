@@ -78,16 +78,14 @@ categories.map((item)=>
         "<button onclick='addtocart("+(i++)+")' class='bb'>Add to cart</button> " +
         `</div>
         <Button onclick="Toggle1()" id="btnh1" class="butt"><i class="fa-solid fa-heart"></i></Button>
-        </div>`)}).join('')  
-        var btnvar1 = document.getElementById('btnh1');
+        </div>`)
+    }).join('')  
 
-        function Toggle1(){
-                 if (btnvar1.style.color =="red") {
-                     btnvar1.style.color = "grey"
-                 }
-                 else{
-                     btnvar1.style.color = "red"
-                 }
+        let hearts = document.querySelectorAll(".fa-solid")
+        for(let heart of hearts){
+            heart.addEventListener("click", function(){
+                heart.classList.toggle("heart")
+            })
         }
 
 
@@ -114,7 +112,6 @@ function displaycart(){
         document.getElementById("cartItem").innerHTML = cart.map((items)=>
         {
             var {image, title, price} = items;
-            var quantityrow = document.getElementById('quantity')
             document.getElementById("total").innerHTML = "$ "+total+".00";
             return(
                 `<div class='cart-item'>
@@ -122,15 +119,19 @@ function displaycart(){
                     <img class='rowimg' src=${image}>
                 </div>
                 <p style='color:black;font-size:12px;'>${title}</p>
-                <h2 style='font-size: 15px;'>$ ${price}.00</h2>`+
+                <h2 style='font-size: 15px;'>$ ${price}.00</h2>
+               
+                `+
                 "<i style='color:black;' class='fa-solid fa-trash' onclick='delElement("+ (j++) +")'></i></div>"
                 );
                 
         }).join('');
     }
 }
+// var btnplus = document.getElementsByClassName('fa-plus')
 
-
-
-
-
+// for(var plus of btnplus){
+//     plus.addEventListener('click',function(){
+//      plus.nextElementSibling.innerHTML++
+//     })
+// }
