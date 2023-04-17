@@ -58,38 +58,36 @@ const product = [
     }
 ];
 
-const categories = [...new Set(product.map((item)=>{return item}))]
+const categories = [...new Set(product.map((item)=>
+    {return item}))]
     let i=0;
-document.getElementById('root').innerHTML = 
-categories.map((item)=>
+document.getElementById('root').innerHTML = categories.map((item)=>
 {
-    var {image, title, price,text} = item;
+    var {image, title, price, text} = item;
     return(
-        `<div class='box'>  
-
+        `<div class='box'>
+        <i class="fa-solid fa-heart red"></i>
             <div class='img-box'>
                 <img class='images' src=${image}></img>
             </div>
-
         <div class='bottom'>
-        <p class='tex'>${text} </p>
         <p>${title}</p>
+        <p class='tex'>${text}</p>
         <h2>$ ${price}.00</h2>`+
-        "<button onclick='addtocart("+(i++)+")' class='bb'>Add to cart</button> " +
+        "<button class='bb' onclick='addtocart("+(i++)+")'>Add to cart</button>"+
         `</div>
-        <Button onclick="Toggle1()" id="btnh1" class="butt"><i class="fa-solid fa-heart"></i></Button>
-        </div>`)
-    }).join('')  
+        </div>`
+    )
+}).join('')
 
-        let hearts = document.querySelectorAll(".fa-solid")
-        for(let heart of hearts){
-            heart.addEventListener("click", function(){
-                heart.classList.toggle("heart")
-            })
-        }
+let hearts = document.getElementsByClassName('fa-heart')
+for( let heart of hearts){
+    heart.addEventListener('click',function(){
+        heart.classList.toggle('red')
+    })
+}
 
-
-        var cart =[];
+var cart =[];
 
 function addtocart(a){
     cart.push({...categories[a]});
@@ -101,8 +99,7 @@ function delElement(a){
 }
 
 function displaycart(){
-    let j = 0, total=0; 
-
+    let j = 0, total=0;
     document.getElementById("count").innerHTML=cart.length;
     if(cart.length==0){
         document.getElementById('cartItem').innerHTML = "Your cart is empty";
@@ -112,26 +109,55 @@ function displaycart(){
         document.getElementById("cartItem").innerHTML = cart.map((items)=>
         {
             var {image, title, price} = items;
-            document.getElementById("total").innerHTML = "$ "+total+".00";
+            let qty = document.getElementById('quant')
+            total=total+price;  
+            // total = (quant * price)+total
             return(
                 `<div class='cart-item'>
                 <div class='row-img'>
                     <img class='rowimg' src=${image}>
                 </div>
-                <p style='color:black;font-size:12px;'>${title}</p>
-                <h2 style='font-size: 15px;'>$ ${price}.00</h2>
-               
-                `+
-                "<i style='color:black;' class='fa-solid fa-trash' onclick='delElement("+ (j++) +")'></i></div>"
-                );
-                
+                <p style='font-size:12px;'>${title}</p>
+                <i class="fa-solid fa-plus"></i>
+                <p id="quant" class='qty'>0</p>
+                <i class="fa-solid fa-minus"></i>
+                <div>
+                <h2 style='font-size: 15px;'>$</h2>
+                <h2 style='font-size: 15px;' class="price">${price}</h2>
+                </div>`+
+                "<i class='fa-solid fa-trash' onclick='delElement("+ (j++) +")'></i></div>"
+            );
         }).join('');
     }
-}
-// var btnplus = document.getElementsByClassName('fa-plus')
 
-// for(var plus of btnplus){
-//     plus.addEventListener('click',function(){
-//      plus.nextElementSibling.innerHTML++
-//     })
-// }
+    let btnplus = document.getElementsByClassName('fa-plus')
+    for (let plus of btnplus){
+        plus.addEventListener('click',function(){
+            plus.nextElementSibling.innerHTML++
+        sum()
+        })
+    }   
+
+    let btnminus = document.getElementsByClassName('fa-minus')
+    for (let minus of btnminus){
+        minus.addEventListener('click',function(){
+            if(minus.previousElementSibling.innerHTML>0){
+                minus.previousElementSibling.innerHTML--
+            }
+            sum()
+        })
+}
+
+function sum(){
+    let qty = document.querySelectorAll('.qty')
+    let price = document.querySelectorAll('.price')
+
+    let sum = 0
+
+    for( let i = 0 ; i<qty.length; i++){
+        sum += qty[i].innerHTML*price[i].innerHTML
+    }
+    document.getElementById('total').innerHTML = "total: $" + sum
+}
+
+}
